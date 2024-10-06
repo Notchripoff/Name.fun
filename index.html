@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Name.fun</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            margin: 20px 0;
+        }
+        header h1 {
+            font-size: 36px;
+            margin: 0;
+            color: #333;
+        }
+        header p {
+            font-size: 18px;
+            color: #666;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+        .card {
+            width: 300px;
+            height: 150px;
+            border: 2px solid #000;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .card img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+        /* Card Styles */
+        .card.sun-vs-moon {
+            background: linear-gradient(to right, #ffeb3b 50%, #000 50%);
+            color: #fff;
+        }
+        .card.sun-vs-moon span {
+            background-color: #ffeb3b;
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .card.sun-vs-moon span + span {
+            background-color: #000;
+            color: #fff;
+        }
+        .card.infinite-craft, .card.the-password-game, .card.wonders-of-street-view {
+            background-color: #f5f5f5;
+        }
+        .card.internet-artifacts, .card.space-elevator, .card.asteroid-launcher {
+            background-color: #f5e0c3;
+        }
+        .card.draw-a-perfect-circle {
+            background-color: #000;
+            color: #fff;
+        }
+        /* Game Div Styles */
+        .game {
+            display: none;
+            margin-top: 20px;
+        }
+        .game canvas {
+            border: 1px solid #000;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Name.fun</h1>
+        <p>a tiny website by NamenotFound</p>
+    </header>
+    <div class="container">
+        <div class="card sun-vs-moon" onclick="startSunVsMoonGame()">
+            <span>Sun</span> vs <span>Moon</span>
+        </div>
+        <div class="card infinite-craft" onclick="startInfiniteCraftGame()">
+            Infinite Craft
+        </div>
+        <div class="card internet-artifacts" onclick="startInternetArtifactsGame()">
+            <img alt="Illustration of a person examining an artifact" src="https://storage.googleapis.com/a1aa/image/1zDCGKfEs4wUXKIerUFcLeTclkWqhSh6fDaWe51zaMqjDIhcC.jpg"/>
+            Internet Artifacts
+        </div>
+        <div class="card the-password-game" onclick="startPasswordGame()">
+            <span>✶ The Password Game</span>
+        </div>
+        <div class="card space-elevator" onclick="startSpaceElevatorGame()">
+            <img alt="Illustration of a space elevator" src="https://storage.googleapis.com/a1aa/image/9kZkW65U5s5IGt9SLI7QnA9KDcb9vTbZ5UNl3TcnzQsGQC5E.jpg"/>
+            SPACE ELEVATOR
+        </div>
+        <div class="card asteroid-launcher" onclick="startAsteroidLauncherGame()">
+            <img alt="Illustration of an asteroid heading towards Earth" src="https://storage.googleapis.com/a1aa/image/bPDMW2jIVYJPJZjr38bABdlj6p1N0mys1lGkL7H9CFFGQC5E.jpg"/>
+            ASTEROID LAUNCHER
+        </div>
+        <div class="card draw-a-perfect-circle" onclick="startCircleGame()">
+            Draw a Perfect Circle
+        </div>
+        <div class="card wonders-of-street-view" onclick="startWondersOfStreetViewGame()">
+            <img alt="Illustration of a street view" src="https://storage.googleapis.com/a1aa/image/ponsgnsll4ZDPZiyrn861EPYl2zPrevgtee5XxMyaNwtASInA.jpg"/>
+            Wonders of Street View
+        </div>
+        <div class="card days-since-incident" onclick="startDaysSinceIncidentGame()">
+            <img alt="Illustration of a sign showing days since last incident" src="https://storage.googleapis.com/a1aa/image/IGcmfiqoQXQPMSf6ePvpmxdIuDJMMQyVVbiXxkEcL4S7ASInA.jpg"/>
+            Days Since Incident
+        </div>
+    </div>
+    <div id="circle-game" class="game">
+        <h2>Draw a Perfect Circle</h2>
+        <canvas id="circleCanvas" width="400" height="400"></canvas>
+        <p>Draw a circle by clicking and dragging your mouse.</p>
+        <button onclick="checkCircle()">Check Circle</button>
+        <p id="result"></p>
+    </div>
+    <div id="password-game" class="game">
+        <h2>The Password Game</h2>
+        <p>Enter a password that meets the following criteria:</p>
+        <ul>
+            <li>At least 8 characters long</li>
+            <li>Contains at least one uppercase letter</li>
+            <li>Contains at least one number</li>
+            <li>Contains at least one special character</li>
+        </ul>
+        <input id="passwordInput" type="password" placeholder="Enter your password" />
+        <button onclick="checkPassword()">Check Password</button>
+        <p id="passwordResult"></p>
+    </div>
+    <div id="asteroid-launcher-game" class="game">
+        <h2>Asteroid Launcher</h2>
+        <canvas id="asteroidCanvas" width="400" height="400"></canvas>
+        <p>Click to launch an asteroid!</p>
+    </div>
+    <div id="sun-vs-moon-game" class="game">
+        <h2>Sun vs Moon</h2>
+        <p>Choose your side:</p>
+        <button onclick="alert('You chose Sun!')">Sun</button>
+        <button onclick="alert('You chose Moon!')">Moon</button>
+    </div>
+    <div id="infinite-craft-game" class="game">
+        <h2>Infinite Craft</h2>
+        <p>Build your world:</p>
+        <button onclick="alert('Building...')">Build</button>
+    </div>
+    <div id="internet-artifacts-game" class="game">
+        <h2>Internet Artifacts</h2>
+        <p>Explore the artifacts:</p>
+        <button onclick="alert('Exploring...')">Explore</button>
+    </div>
+    <div id="space-elevator-game" class="game">
+        <h2>Space Elevator</h2>
+        <p>Ride the space elevator:</p>
+        <button onclick="alert('Riding...')">Ride</button>
+    </div>
+    <div id="wonders-of-street-view-game" class="game">
+        <h2>Wonders of Street View</h2>
+        <p>Discover the wonders:</p>
+        <button onclick="alert('Discovering...')">Discover</button>
+    </div>
+    <div id="days-since-incident-game" class="game">
+        <h2>Days Since Incident</h2>
+        <p>Track the days:</p>
+        <button onclick="alert('Tracking...')">Track</button>
+    </div>
+
+    <script>
+        function startCircleGame() {
+            document.getElementById('circle-game').style.display = 'block';
+            hideOtherGames('circle-game');
+        }
+        function startPasswordGame() {
+            document.getElementById('password-game').style.display = 'block';
+            hideOtherGames('password-game');
+        }
+        function startAsteroidLauncherGame() {
+            document.getElementById('asteroid-launcher-game').style.display = 'block';
+            hideOtherGames('asteroid-launcher-game');
+            initAsteroidLauncher();
+        }
+        function startSunVsMoonGame() {
+            document.getElementById('sun-vs-moon-game').style.display = 'block';
+            hideOtherGames('sun-vs-moon-game');
+        }
+        function startInfiniteCraftGame() {
+            document.getElementById('infinite-craft-game').style.display = 'block';
+            hideOtherGames('infinite-craft-game');
+        }
+        function startInternetArtifactsGame() {
+            document.getElementById('internet-artifacts-game').style.display = 'block';
+            hideOtherGames('internet-artifacts-game');
+        }
+        function startSpaceElevatorGame() {
+            document.getElementById('space-elevator-game').style.display = 'block';
+            hideOtherGames('space-elevator-game');
+        }
+        function startWondersOfStreetViewGame() {
+            document.getElementById('wonders-of-street-view-game').style.display = 'block';
+            hideOtherGames('wonders-of-street-view-game');
+        }
+        function startDaysSinceIncidentGame() {
+            document.getElementById('days-since-incident-game').style.display = 'block';
+            hideOtherGames('days-since-incident-game');
+        }
+
+        function hideOtherGames(except) {
+            const games = ['circle-game', 'password-game', 'asteroid-launcher-game', 'sun-vs-moon-game', 'infinite-craft-game', 'internet-artifacts-game', 'space-elevator-game', 'wonders-of-street-view-game', 'days-since-incident-game'];
+            games.forEach(game => {
+                document.getElementById(game).style.display = game === except ? 'block' : 'none';
+            });
+        }
+
+        // Draw a Perfect Circle Game
+        const canvas = document.getElementById('circleCanvas');
+        const ctx = canvas.getContext('2d');
+        let drawing = false, startX, startY;
+
+        canvas.addEventListener('mousedown', (e) => {
+            drawing = true;
+            startX = e.offsetX;
+            startY = e.offsetY;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+        canvas.addEventListener('mousemove', (e) => {
+            if (drawing) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const radius = Math.sqrt(Math.pow(e.offsetX - startX, 2) + Math.pow(e.offsetY - startY, 2));
+                ctx.beginPath();
+                ctx.arc(startX, startY, radius, 0, 2 * Math.PI);
+                ctx.stroke();
+            }
+        });
+        canvas.addEventListener('mouseup', () => { drawing = false; });
+
+        function checkCircle() {
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+            let circlePixels = 0, totalPixels = 0;
+
+            for (let i = 0; i < data.length; i += 4) {
+                if (data[i + 3] > 0) {
+                    totalPixels++;
+                    if (data[i] === 0 && data[i + 1] === 0 && data[i + 2] === 0) {
+                        circlePixels++;
+                    }
+                }
+            }
+
+            const accuracy = (circlePixels / totalPixels) * 100;
+            document.getElementById('result').innerText = `Your circle is ${accuracy.toFixed(2)}% perfect!`;
+        }
+
+        // The Password Game
+        function checkPassword() {
+            const password = document.getElementById('passwordInput').value;
+            const result = document.getElementById('passwordResult');
+            const criteria = [
+                { regex: /.{8,}/, message: "At least 8 characters long" },
+                { regex: /[A-Z]/, message: "Contains at least one uppercase letter" },
+                { regex: /[0-9]/, message: "Contains at least one number" },
+                { regex: /[!@#$%^&*(),.?":{}|<>]/, message: "Contains at least one special character" }
+            ];
+
+            const messages = criteria.filter(criterion => !criterion.regex.test(password)).map(criterion => criterion.message);
+            if (messages.length === 0) {
+                result.innerText = "Password is valid!";
+                result.style.color = "green";
+            } else {
+                result.innerText = "Password is invalid: " + messages.join(", ");
+                result.style.color = "red";
+            }
+        }
+
+        // Asteroid Launcher Game
+        function initAsteroidLauncher() {
+            const asteroidCanvas = document.getElementById('asteroidCanvas');
+            const asteroidCtx = asteroidCanvas.getContext('2d');
+
+            asteroidCanvas.addEventListener('click', (e) => {
+                const x = e.offsetX;
+                const y = e.offsetY;
+                launchAsteroid(x, y);
+            });
+
+            function launchAsteroid(x, y) {
+                asteroidCtx.clearRect(0, 0, asteroidCanvas.width, asteroidCanvas.height);
+                asteroidCtx.beginPath();
+                asteroidCtx.arc(x, y, 20, 0, 2 * Math.PI);
+                asteroidCtx.fillStyle = 'red';
+                asteroidCtx.fill();
+                asteroidCtx.stroke();
+            }
+        }
+    </script>
+</body>
+</html>
